@@ -16,25 +16,14 @@ interface ExportDialogProps {
 }
 
 const escapeCSVField = (field: string | number): string => {
-  const str = String(field);
+ // تحويل إلى نص ومعالجة القيم الفارغة
+  const str = field?.toString() ?? '';
   
-  // Replace newlines with \n
-  let escaped = str.replace(/\r?\n/g, '\\n');
+  // إذا كان فارغ أو لا يحتاج معالجة
+  if (!str || !/[",\r\n]/.test(str)) return str;
   
-  // Replace carriage returns with \r
-  escaped = escaped.replace(/\r/g, '\\r');
-  
-  // Replace tabs with \t
-  escaped = escaped.replace(/\t/g, '\\t');
-  
-  // If field contains delimiter, quotes, or other special characters, wrap in quotes
-  // and escape existing quotes by doubling them
-  if (escaped.includes(',') || escaped.includes(';') || escaped.includes('"') || escaped.includes('\\n') || escaped.includes('\\r')) {
-    escaped = escaped.replace(/"/g, '""');
-    escaped = `"${escaped}"`;
-  }
-  
-  return escaped;
+  // مضاعفة علامات الاقتباس وإحاطة النص
+  return `"${str.replace(/"/g, '""')}"`;
 };
 
 export const ExportDialog = ({ open, onOpenChange, data, onExport }: ExportDialogProps) => {
