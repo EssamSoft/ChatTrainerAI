@@ -122,9 +122,8 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo (Faster)</SelectItem>
-                  <SelectItem value="gpt-4">GPT-4 (More Accurate)</SelectItem>
-                  <SelectItem value="gpt-4-turbo">GPT-4 Turbo (Best)</SelectItem>
+                  <SelectItem value="gpt-4o-mini-2024-07-18">gpt-4o-mini</SelectItem>
+                  <SelectItem value="text-embedding-ada-002">text-embedding-ada-002</SelectItem>
                 </SelectContent>
               </Select>
             </div>
