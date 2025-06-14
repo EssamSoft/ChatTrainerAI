@@ -15,6 +15,28 @@ interface ExportDialogProps {
   onExport: (data: CSVRow[], options: { delimiter: string; filename: string }) => void;
 }
 
+const escapeCSVField = (field: string | number): string => {
+  const str = String(field);
+  
+  // Replace newlines with \n
+  let escaped = str.replace(/\r?\n/g, '\\n');
+  
+  // Replace carriage returns with \r
+  escaped = escaped.replace(/\r/g, '\\r');
+  
+  // Replace tabs with \t
+  escaped = escaped.replace(/\t/g, '\\t');
+  
+  // If field contains delimiter, quotes, or other special characters, wrap in quotes
+  // and escape existing quotes by doubling them
+  if (escaped.includes(',') || escaped.includes(';') || escaped.includes('"') || escaped.includes('\\n') || escaped.includes('\\r')) {
+    escaped = escaped.replace(/"/g, '""');
+    escaped = `"${escaped}"`;
+  }
+  
+  return escaped;
+};
+
 export const ExportDialog = ({ open, onOpenChange, data, onExport }: ExportDialogProps) => {
   const [delimiter, setDelimiter] = useState(',');
   const [filename, setFilename] = useState(() => {
@@ -33,15 +55,15 @@ export const ExportDialog = ({ open, onOpenChange, data, onExport }: ExportDialo
     }
 
     try {
-      // Create CSV content
+      // Create CSV content with proper escaping
       const headers = ['ID', 'Question', 'Answer', 'Intent'];
       const csvContent = [
         headers.join(delimiter),
         ...data.map(row => [
-          row.id,
-          `"${row.question.replace(/"/g, '""')}"`,
-          `"${row.answer.replace(/"/g, '""')}"`,
-          `"${row.intent}"`
+          escapeCSVField(row.id),
+          escapeCSVField(row.question),
+          escapeCSVField(row.answer),
+          escapeCSVField(row.intent)
         ].join(delimiter))
       ].join('\n');
 
