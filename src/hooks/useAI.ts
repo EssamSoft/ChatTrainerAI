@@ -3,7 +3,7 @@ import { useCSVStore } from '@/store/csvStore';
 import { useState } from 'react';
 
 export const useAI = () => {
-  const { openAIKey, openAIModel } = useCSVStore();
+  const { openAIKey, openAIModel, systemPrompt } = useCSVStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const generateQuestion = async (intent: string): Promise<string> => {
@@ -25,7 +25,7 @@ export const useAI = () => {
           messages: [
             {
               role: 'system',
-              content: `You are an AI assistant that generates questions for FAQ datasets. Generate a clear, concise question that fits the intent: ${intent}. The question should be practical and commonly asked.`
+              content: `${systemPrompt} Generate a clear, concise question that fits the intent: ${intent}. The question should be practical and commonly asked.`
             },
             {
               role: 'user',
@@ -68,7 +68,7 @@ export const useAI = () => {
           messages: [
             {
               role: 'system',
-              content: `You are an AI assistant that generates helpful answers for FAQ datasets. Provide a clear, accurate, and helpful answer to the question. The intent is: ${intent}.`
+              content: `${systemPrompt} Provide a clear, accurate, and helpful answer to the question. The intent is: ${intent}.`
             },
             {
               role: 'user',

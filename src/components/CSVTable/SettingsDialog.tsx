@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Settings, Key, Palette, TestTube } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useCSVStore } from '@/store/csvStore';
@@ -15,8 +15,9 @@ interface SettingsDialogProps {
 }
 
 export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
-  const { openAIKey, openAIModel, theme, setOpenAIKey, setOpenAIModel, toggleTheme } = useCSVStore();
+  const { openAIKey, openAIModel, systemPrompt, theme, setOpenAIKey, setOpenAIModel, setSystemPrompt, toggleTheme } = useCSVStore();
   const [tempKey, setTempKey] = useState(openAIKey);
+  const [tempPrompt, setTempPrompt] = useState(systemPrompt);
   const [showKey, setShowKey] = useState(false);
   const [isTestingKey, setIsTestingKey] = useState(false);
 
@@ -25,6 +26,14 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
     toast({
       title: "API Key saved",
       description: "Your OpenAI API key has been saved securely.",
+    });
+  };
+
+  const handleSavePrompt = () => {
+    setSystemPrompt(tempPrompt);
+    toast({
+      title: "System prompt saved",
+      description: "Your AI system prompt has been updated.",
     });
   };
 
@@ -128,6 +137,20 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               </Select>
             </div>
             
+            <div className="space-y-2">
+              <Label htmlFor="system-prompt">AI System Prompt</Label>
+              <Textarea
+                id="system-prompt"
+                value={tempPrompt}
+                onChange={(e) => setTempPrompt(e.target.value)}
+                placeholder="Enter your custom system prompt for AI generation..."
+                className="min-h-[100px]"
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                This prompt will be used to guide AI generation for questions and answers.
+              </p>
+            </div>
+            
             <div className="flex gap-2">
               <Button
                 variant="outline"
@@ -140,6 +163,12 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               </Button>
               <Button onClick={handleSaveKey} disabled={!tempKey.trim()}>
                 Save API Key
+              </Button>
+            </div>
+
+            <div className="flex gap-2">
+              <Button onClick={handleSavePrompt} disabled={!tempPrompt.trim()}>
+                Save System Prompt
               </Button>
             </div>
           </TabsContent>
