@@ -1,3 +1,4 @@
+
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { CSVRow } from '@/types/csv';
@@ -9,6 +10,7 @@ interface CSVStore {
   systemPrompt: string;
   maxTokens: number;
   theme: 'light' | 'dark';
+  intentOptions: string[];
   
   // Actions
   addRow: (row: CSVRow) => void;
@@ -21,6 +23,9 @@ interface CSVStore {
   setSystemPrompt: (prompt: string) => void;
   setMaxTokens: (tokens: number) => void;
   toggleTheme: () => void;
+  setIntentOptions: (options: string[]) => void;
+  addIntentOption: (intent: string) => void;
+  removeIntentOption: (intent: string) => void;
 }
 
 export const useCSVStore = create<CSVStore>()(
@@ -31,13 +36,13 @@ export const useCSVStore = create<CSVStore>()(
           id: 1,
           question: "What is your name?",
           answer: "I am an AI assistant created to help you manage your CSV data.",
-          intent: "Greeting"
+          intent: ""
         },
         {
           id: 2,
           question: "How can I import CSV files?",
           answer: "You can import CSV files by clicking the Import CSV button and selecting your file.",
-          intent: "Information"
+          intent: ""
         }
       ],
       openAIKey: '',
@@ -45,6 +50,7 @@ export const useCSVStore = create<CSVStore>()(
       systemPrompt: 'You are an AI assistant that helps generate questions and answers for FAQ datasets. Be clear, concise, and helpful.',
       maxTokens: 150,
       theme: 'light',
+      intentOptions: [],
 
       addRow: (row) => set((state) => ({
         data: [...state.data, row]
@@ -76,6 +82,16 @@ export const useCSVStore = create<CSVStore>()(
 
       toggleTheme: () => set((state) => ({
         theme: state.theme === 'light' ? 'dark' : 'light'
+      })),
+
+      setIntentOptions: (options) => set({ intentOptions: options }),
+
+      addIntentOption: (intent) => set((state) => ({
+        intentOptions: [...state.intentOptions, intent]
+      })),
+
+      removeIntentOption: (intent) => set((state) => ({
+        intentOptions: state.intentOptions.filter(option => option !== intent)
       })),
     }),
     {
