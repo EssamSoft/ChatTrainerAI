@@ -15,15 +15,26 @@ interface ExportDialogProps {
   onExport: (data: CSVRow[], options: { delimiter: string; filename: string }) => void;
 }
 
-const escapeCSVField = (field: string | number): string => {
- // تحويل إلى نص ومعالجة القيم الفارغة
+const escapeCSVField = (field: string | number, delimiter: string = ','): string => {
+  // Convert to string and handle empty/null values
   const str = field?.toString() ?? '';
   
-  // إذا كان فارغ أو لا يحتاج معالجة
-  if (!str || !/[",\r\n]/.test(str)) return str;
+  // If empty, return empty string
+  if (!str) return '';
   
-  // مضاعفة علامات الاقتباس وإحاطة النص
-  return `"${str.replace(/"/g, '""')}"`;
+  // Check if field needs quoting (contains delimiter, quotes, newlines, or carriage returns)
+  const needsQuoting = str.includes(delimiter) || 
+                      str.includes('"') || 
+                      str.includes('\n') || 
+                      str.includes('\r') ||
+                      str.startsWith(' ') ||
+                      str.endsWith(' ');
+  
+  if (!needsQuoting) return str;
+  
+  // Escape quotes by doubling them and wrap in quotes
+  const escapedStr = str.replace(/"/g, '""');
+  return `"${escapedStr}"`;
 };
 
 export const ExportDialog = ({ open, onOpenChange, data, onExport }: ExportDialogProps) => {
@@ -46,18 +57,24 @@ export const ExportDialog = ({ open, onOpenChange, data, onExport }: ExportDialo
     try {
       // Create CSV content with proper escaping
       const headers = ['ID', 'Question', 'Answer', 'Intent'];
+      const actualDelimiter = delimiter === '\t' ? '\t' : delimiter;
+      
       const csvContent = [
-        headers.join(delimiter),
+        headers.map(header => escapeCSVField(header, actualDelimiter)).join(actualDelimiter),
         ...data.map(row => [
-          escapeCSVField(row.id),
-          escapeCSVField(row.question),
-          escapeCSVField(row.answer),
-          escapeCSVField(row.intent)
-        ].join(delimiter))
-      ].join('\n');
+          escapeCSVField(row.id, actualDelimiter),
+          escapeCSVField(row.question, actualDelimiter),
+          escapeCSVField(row.answer, actualDelimiter),
+          escapeCSVField(row.intent, actualDelimiter)
+        ].join(actualDelimiter))
+      ].join('\r\n'); // Use CRLF for better compatibility
 
-      // Create and download file
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      // Create and download file with UTF-8 BOM for better Excel compatibility
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + csvContent], { 
+        type: 'text/csv;charset=utf-8;' 
+      });
+      
       const link = document.createElement('a');
       const url = URL.createObjectURL(blob);
       
@@ -68,6 +85,7 @@ export const ExportDialog = ({ open, onOpenChange, data, onExport }: ExportDialo
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      URL.revokeObjectURL(url);
       
       onOpenChange(false);
       
