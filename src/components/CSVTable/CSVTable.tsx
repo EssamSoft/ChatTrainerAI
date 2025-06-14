@@ -109,7 +109,7 @@ const CSVTable = () => {
               onClick={() => setShowImport(true)}
               className="gap-2 dark:text-white"
             >
-              <Upload className="w-4 h-4" />
+              <Download className="w-4 h-4" />
               Import CSV
             </Button>
             
@@ -119,7 +119,7 @@ const CSVTable = () => {
               onClick={() => setShowExport(true)}
               className="gap-2 dark:text-white"
             >
-              <Download className="w-4 h-4" />
+              <Upload className="w-4 h-4" />
               Export CSV
             </Button>
             
