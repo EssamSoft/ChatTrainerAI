@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Download, FileText } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -22,19 +21,26 @@ const escapeCSVField = (field: string | number, delimiter: string = ','): string
   // If empty, return empty string
   if (!str) return '';
   
-  // Check if field needs quoting (contains delimiter, quotes, newlines, or carriage returns)
-  const needsQuoting = str.includes(delimiter) || 
-                      str.includes('"') || 
-                      str.includes('\n') || 
-                      str.includes('\r') ||
-                      str.startsWith(' ') ||
-                      str.endsWith(' ');
+  // First, escape special characters as literal strings
+  let escapedStr = str
+    .replace(/\n/g, '\\n')    // Replace actual newlines with \n
+    .replace(/\r/g, '\\r')    // Replace actual carriage returns with \r
+    .replace(/\t/g, '\\t');   // Replace actual tabs with \t
   
-  if (!needsQuoting) return str;
+  // Check if field needs quoting (contains delimiter, quotes, or starts/ends with spaces)
+  const needsQuoting = escapedStr.includes(delimiter) || 
+                      escapedStr.includes('"') || 
+                      escapedStr.includes('\\n') || 
+                      escapedStr.includes('\\r') ||
+                      escapedStr.includes('\\t') ||
+                      escapedStr.startsWith(' ') ||
+                      escapedStr.endsWith(' ');
+  
+  if (!needsQuoting) return escapedStr;
   
   // Escape quotes by doubling them and wrap in quotes
-  const escapedStr = str.replace(/"/g, '""');
-  return `"${escapedStr}"`;
+  const finalEscapedStr = escapedStr.replace(/"/g, '""');
+  return `"${finalEscapedStr}"`;
 };
 
 export const ExportDialog = ({ open, onOpenChange, data, onExport }: ExportDialogProps) => {
