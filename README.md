@@ -1,73 +1,152 @@
-# Welcome to your Lovable project
+# ChatTrainer AI 🤖
 
-## Project info
+**Modern web-based tool for creating and managing high-quality Q&A datasets to train AI chatbots and RAG systems.**
 
-**URL**: https://lovable.dev/projects/53ea7dd4-c866-4c52-9fcd-972b792578a2
+## ✨ Features
 
-## How can I edit this code?
+- 🤖 **AI-Powered Generation**: Automatically generate questions and answers using OpenAI integration
+- 📝 **Interactive CSV Table**: Google Sheets-like interface with infinite rows support
+- 🏷️ **Smart Classification**: Intent and category dropdown with custom entry options
+- 📊 **Import/Export**: Seamless CSV file handling with validation
+- 🎨 **Modern UI**: Clean, responsive design with dark/light mode
+- ⚙️ **Configurable Settings**: OpenAI API key management and customization options
+- 🔄 **Real-time Auto-save**: Never lose your work with automatic data persistence
+- 🎯 **Context Menu**: Right-click actions for efficient row management
 
-There are several ways of editing your application.
+## 🚀 Quick Start
 
-**Use Lovable**
+### Prerequisites
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/53ea7dd4-c866-4c52-9fcd-972b792578a2) and start prompting.
+- Node.js 16+ and npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- OpenAI API key (optional, for AI features)
 
-Changes made via Lovable will be committed automatically to this repo.
+### Installation
 
-**Use your preferred IDE**
+```bash
+# Clone the repository
+git clone https://github.com/EssamSoft/ChatTrainerAI
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# Navigate to project directory  
+cd chattrainer-ai
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# Install dependencies
+npm install
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Open [http://localhost:5173](http://localhost:5173) to view the application.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🛠️ Usage
 
-**Use GitHub Codespaces**
+### Basic Operations
+1. **Add Rows**: Click below the table to add new rows (Google Sheets style)
+2. **Edit Cells**: Double-click any cell to edit inline
+3. **Delete Rows**: Right-click on a row and select "Delete"
+4. **Import Data**: Use the import button to load existing CSV files
+5. **Export Data**: Export your dataset as CSV with custom formatting
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### AI Integration
+1. **Setup**: Click the settings icon and enter your OpenAI API key
+2. **Generate Questions**: Focus on a question field and click the AI button
+3. **Generate Answers**: Focus on an answer field for context-aware answer generation
+4. **Smart Suggestions**: AI considers intent and category for better results
 
-## What technologies are used for this project?
+### Data Structure
+| Column | Description | Type |
+|--------|-------------|------|
+| ID | Auto-generated unique identifier | Auto-increment |
+| Question | Training question text | Text + AI Generate |
+| Answer | Corresponding answer text | Text + AI Generate |
+| Intent | Classification of question intent | Dropdown + Custom |
+| Category | Topic/domain category | Dropdown + Custom |
 
-This project is built with:
+## 🏗️ Built With
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Frontend Framework**: React 18+ with TypeScript
+- **Styling**: Tailwind CSS with shadcn-ui components
+- **Build Tool**: Vite for fast development and building
+- **State Management**: React hooks with local storage persistence
+- **Table Management**: Advanced table functionality with virtual scrolling
+- **File Processing**: CSV parsing and generation with validation
+- **AI Integration**: OpenAI API for intelligent content generation
 
-## How can I deploy this project?
+## 🔧 Development
 
-Simply open [Lovable](https://lovable.dev/projects/53ea7dd4-c866-4c52-9fcd-972b792578a2) and click on Share -> Publish.
+### Available Scripts
 
-## Can I connect a custom domain to my Lovable project?
+```bash
+# Start development server
+npm run dev
 
-Yes, you can!
+# Build for production
+npm run build
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+# Preview production build
+npm run preview
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+# Run type checking
+npm run type-check
+
+# Lint code
+npm run lint
+```
+
+
+## 🚀 Deployment
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+The `dist` folder contains the built application ready for deployment.
+
+### Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/EssamSoft/ChatTrainerAI)
+
+### Deploy to Netlify
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/EssamSoft/ChatTrainerAI)
+
+## 🎯 Use Cases
+
+- **AI Chatbot Training**: Create comprehensive Q&A datasets for chatbot training
+- **RAG System Development**: Build knowledge bases for retrieval-augmented generation
+- **FAQ Management**: Organize and maintain frequently asked questions
+- **Intent Classification**: Train NLU models with categorized conversation data
+- **Customer Support**: Prepare training data for automated support systems
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with modern web technologies for optimal performance
+- Inspired by the need for better AI training data management tools
+- Designed with user experience and developer productivity in mind
+
+## 📞 Support
+
+If you have any questions or need help, please:
+- Open an issue on GitHub
+- Check the documentation
+- Join our community discussions
+
+---
+
+**Made with ❤️ for the AI development community by lovable**
