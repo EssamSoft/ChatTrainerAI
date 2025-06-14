@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { CSVRow } from '@/types/csv';
@@ -9,7 +8,6 @@ interface CSVStore {
   openAIModel: string;
   systemPrompt: string;
   maxTokens: number;
-  customIntents: string[];
   theme: 'light' | 'dark';
   
   // Actions
@@ -22,8 +20,6 @@ interface CSVStore {
   setOpenAIModel: (model: string) => void;
   setSystemPrompt: (prompt: string) => void;
   setMaxTokens: (tokens: number) => void;
-  addCustomIntent: (intent: string) => void;
-  removeCustomIntent: (intent: string) => void;
   toggleTheme: () => void;
 }
 
@@ -35,20 +31,19 @@ export const useCSVStore = create<CSVStore>()(
           id: 1,
           question: "What is your name?",
           answer: "I am an AI assistant created to help you manage your CSV data.",
-          intent: ""
+          intent: "Greeting"
         },
         {
           id: 2,
           question: "How can I import CSV files?",
           answer: "You can import CSV files by clicking the Import CSV button and selecting your file.",
-          intent: ""
+          intent: "Information"
         }
       ],
       openAIKey: '',
       openAIModel: 'gpt-3.5-turbo',
       systemPrompt: 'You are an AI assistant that helps generate questions and answers for FAQ datasets. Be clear, concise, and helpful.',
       maxTokens: 150,
-      customIntents: [],
       theme: 'light',
 
       addRow: (row) => set((state) => ({
@@ -78,14 +73,6 @@ export const useCSVStore = create<CSVStore>()(
       setSystemPrompt: (prompt) => set({ systemPrompt: prompt }),
 
       setMaxTokens: (tokens) => set({ maxTokens: tokens }),
-
-      addCustomIntent: (intent) => set((state) => ({
-        customIntents: [...state.customIntents, intent]
-      })),
-
-      removeCustomIntent: (intent) => set((state) => ({
-        customIntents: state.customIntents.filter(i => i !== intent)
-      })),
 
       toggleTheme: () => set((state) => ({
         theme: state.theme === 'light' ? 'dark' : 'light'
