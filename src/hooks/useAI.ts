@@ -1,9 +1,10 @@
 
+
 import { useCSVStore } from '@/store/csvStore';
 import { useState } from 'react';
 
 export const useAI = () => {
-  const { openAIKey, openAIModel, systemPrompt } = useCSVStore();
+  const { openAIKey, openAIModel, systemPrompt, maxTokens } = useCSVStore();
   const [isLoading, setIsLoading] = useState(false);
 
   const generateQuestion = async (intent: string): Promise<string> => {
@@ -32,7 +33,7 @@ export const useAI = () => {
               content: `Generate a question with the intent: ${intent}`
             }
           ],
-          max_tokens: 100,
+          max_tokens: maxTokens,
           temperature: 0.7
         })
       });
@@ -75,7 +76,7 @@ export const useAI = () => {
               content: `Question: ${question}\nIntent: ${intent}\n\nProvide a helpful answer:`
             }
           ],
-          max_tokens: 200,
+          max_tokens: maxTokens,
           temperature: 0.7
         })
       });
@@ -98,3 +99,4 @@ export const useAI = () => {
     isLoading
   };
 };
+

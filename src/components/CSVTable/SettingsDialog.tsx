@@ -3,6 +3,7 @@ import { Settings, Key, Palette, TestTube } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -15,9 +16,10 @@ interface SettingsDialogProps {
 }
 
 export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
-  const { openAIKey, openAIModel, systemPrompt, theme, setOpenAIKey, setOpenAIModel, setSystemPrompt, toggleTheme } = useCSVStore();
+  const { openAIKey, openAIModel, systemPrompt, maxTokens, theme, setOpenAIKey, setOpenAIModel, setSystemPrompt, setMaxTokens, toggleTheme } = useCSVStore();
   const [tempKey, setTempKey] = useState(openAIKey);
   const [tempPrompt, setTempPrompt] = useState(systemPrompt);
+  const [tempMaxTokens, setTempMaxTokens] = useState(maxTokens);
   const [showKey, setShowKey] = useState(false);
   const [isTestingKey, setIsTestingKey] = useState(false);
 
@@ -34,6 +36,22 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
     toast({
       title: "System prompt saved",
       description: "Your AI system prompt has been updated.",
+    });
+  };
+
+  const handleSaveMaxTokens = () => {
+    if (tempMaxTokens < 1 || tempMaxTokens > 4000) {
+      toast({
+        title: "Invalid max tokens",
+        description: "Max tokens must be between 1 and 4000.",
+        variant: "destructive"
+      });
+      return;
+    }
+    setMaxTokens(tempMaxTokens);
+    toast({
+      title: "Max tokens saved",
+      description: "Your AI max tokens setting has been updated.",
     });
   };
 
@@ -138,6 +156,22 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
             </div>
             
             <div className="space-y-2">
+              <Label htmlFor="max-tokens">Max Tokens</Label>
+              <Input
+                id="max-tokens"
+                type="number"
+                min="1"
+                max="4000"
+                value={tempMaxTokens}
+                onChange={(e) => setTempMaxTokens(Number(e.target.value))}
+                placeholder="150"
+              />
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Maximum number of tokens for AI responses (1-4000).
+              </p>
+            </div>
+            
+            <div className="space-y-2">
               <Label htmlFor="system-prompt">AI System Prompt</Label>
               <Textarea
                 id="system-prompt"
@@ -169,6 +203,9 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
             <div className="flex gap-2">
               <Button onClick={handleSavePrompt} disabled={!tempPrompt.trim()}>
                 Save System Prompt
+              </Button>
+              <Button onClick={handleSaveMaxTokens}>
+                Save Max Tokens
               </Button>
             </div>
           </TabsContent>

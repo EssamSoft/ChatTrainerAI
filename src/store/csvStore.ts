@@ -7,6 +7,7 @@ interface CSVStore {
   openAIKey: string;
   openAIModel: string;
   systemPrompt: string;
+  maxTokens: number;
   theme: 'light' | 'dark';
   
   // Actions
@@ -18,6 +19,7 @@ interface CSVStore {
   setOpenAIKey: (key: string) => void;
   setOpenAIModel: (model: string) => void;
   setSystemPrompt: (prompt: string) => void;
+  setMaxTokens: (tokens: number) => void;
   toggleTheme: () => void;
 }
 
@@ -41,6 +43,7 @@ export const useCSVStore = create<CSVStore>()(
       openAIKey: '',
       openAIModel: 'gpt-3.5-turbo',
       systemPrompt: 'You are an AI assistant that helps generate questions and answers for FAQ datasets. Be clear, concise, and helpful.',
+      maxTokens: 150,
       theme: 'light',
 
       addRow: (row) => set((state) => ({
@@ -68,6 +71,8 @@ export const useCSVStore = create<CSVStore>()(
       setOpenAIModel: (model) => set({ openAIModel: model }),
 
       setSystemPrompt: (prompt) => set({ systemPrompt: prompt }),
+
+      setMaxTokens: (tokens) => set({ maxTokens: tokens }),
 
       toggleTheme: () => set((state) => ({
         theme: state.theme === 'light' ? 'dark' : 'light'
