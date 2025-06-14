@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Settings, Key, Palette, TestTube } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -23,23 +24,8 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const [showKey, setShowKey] = useState(false);
   const [isTestingKey, setIsTestingKey] = useState(false);
 
-  const handleSaveKey = () => {
-    setOpenAIKey(tempKey);
-    toast({
-      title: "API Key saved",
-      description: "Your OpenAI API key has been saved securely.",
-    });
-  };
-
-  const handleSavePrompt = () => {
-    setSystemPrompt(tempPrompt);
-    toast({
-      title: "System prompt saved",
-      description: "Your AI system prompt has been updated.",
-    });
-  };
-
-  const handleSaveMaxTokens = () => {
+  const handleSaveAllSettings = () => {
+    // Validate max tokens
     if (tempMaxTokens < 1 || tempMaxTokens > 4000) {
       toast({
         title: "Invalid max tokens",
@@ -48,10 +34,15 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
       });
       return;
     }
+
+    // Save all settings
+    setOpenAIKey(tempKey);
+    setSystemPrompt(tempPrompt);
     setMaxTokens(tempMaxTokens);
+
     toast({
-      title: "Max tokens saved",
-      description: "Your AI max tokens setting has been updated.",
+      title: "Settings saved",
+      description: "All settings have been saved successfully.",
     });
   };
 
@@ -195,18 +186,6 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                 <TestTube className="w-4 h-4" />
                 {isTestingKey ? 'Testing...' : 'Test Connection'}
               </Button>
-              <Button onClick={handleSaveKey} disabled={!tempKey.trim()}>
-                Save API Key
-              </Button>
-            </div>
-
-            <div className="flex gap-2">
-              <Button onClick={handleSavePrompt} disabled={!tempPrompt.trim()}>
-                Save System Prompt
-              </Button>
-              <Button onClick={handleSaveMaxTokens}>
-                Save Max Tokens
-              </Button>
             </div>
           </TabsContent>
           
@@ -238,6 +217,12 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
             </div>
           </TabsContent>
         </Tabs>
+
+        <div className="flex justify-end pt-4 border-t">
+          <Button onClick={handleSaveAllSettings} className="gap-2">
+            Save All Settings
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
