@@ -107,7 +107,7 @@ const CSVTable = () => {
               variant="outline"
               size="sm"
               onClick={() => setShowImport(true)}
-              className="gap-2"
+              className="gap-2 dark:text-white"
             >
               <Upload className="w-4 h-4" />
               Import CSV
@@ -117,7 +117,7 @@ const CSVTable = () => {
               variant="outline"
               size="sm"
               onClick={() => setShowExport(true)}
-              className="gap-2"
+              className="gap-2 dark:text-white"
             >
               <Download className="w-4 h-4" />
               Export CSV
@@ -127,7 +127,7 @@ const CSVTable = () => {
               variant="outline"
               size="sm"
               onClick={() => setShowSettings(true)}
-              className="gap-2"
+              className="gap-2 dark:text-white"
             >
               <Settings className="w-4 h-4" />
               Settings
@@ -137,7 +137,7 @@ const CSVTable = () => {
               variant="outline"
               size="sm"
               onClick={toggleTheme}
-              className="gap-2"
+              className="gap-2 dark:text-white"
             >
               {theme === 'dark' ? '☀️' : '🌙'}
             </Button>
